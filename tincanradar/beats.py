@@ -11,24 +11,27 @@ Refs:
 """
 from __future__ import division
 from numpy import asarray
-
+#
 c = 299792458
 
-def range2beat(range_m, fm, bw):
+def range2beat(range_m, tm, bw):
     """
     range_m: one-way range to target in meters
     bw: FMCW linear chirp bandwidth
-    fm: cadence of sweep (how many sweeps/sec,  or 1/tm)
+    tm: time of sweep
     """
-    return 2*asarray(range_m)*bw*fm/c
+    return 2*asarray(range_m)*bw/(tm*c)
 
-def beat2range(beats,fm,bw):
+def beat2range(beats,tm,bw):
     """
     beats: beat frequencies from target returns
     bw: FMCW linear chirp bandwidth
-    fm: cadence of sweep (how many sweeps/sec,  or 1/tm)
+    tm: time of sweep
     """
-    return c * beats /(2*bw*fm) #distance estimate, meters
+    return c * beat2time(beats,tm,bw) #distance estimate, meters
+
+def beat2time(beats,tm,bw):
+    return beats*tm / (2*bw) #two-way travel time, seconds
 
 
 def bw2rangeres(bw):
@@ -39,11 +42,11 @@ if __name__ == '__main__':
     from argparse import ArgumentParser
     p = ArgumentParser(description='calculate beat frequencies returned by stationary point targets via FMCW stimulus')
     p.add_argument('-r','--range',help='range(s) to point target [meters]',type=float,nargs='+',default=[1,10,50])
-    p.add_argument('--fm',help='sweep frequency [Hz], a.k.a. 1/tm',type=float,default=100)
+    p.add_argument('--tm',help='sweep tim [sec]',type=float,default=0.1)
     p.add_argument('-b','--bw',help='RF bandwidth [Hz] over which you sweep e.g. 10.2 GHz - 10.7 GHz is 500e6',type=float,default=500e6)
     p = p.parse_args()
 
-    fb = range2beat(p.range,p.fm,p.bw)
+    fb = range2beat(p.range,p.tm,p.bw)
 
     rngres = bw2rangeres(p.bw)
 

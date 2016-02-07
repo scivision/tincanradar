@@ -1,4 +1,6 @@
-from numpy import sqrt,asarray,log10
+from numpy import sqrt,asarray,log10,arange
+from numpy import hanning as hann
+from numpy.fft import fft
 
 def rssq(x,axis=None):
     """
@@ -25,3 +27,19 @@ def snrest(signal,noise,axis=None):
     Pnoise = ssq(noise)
 
     return 10 * log10(Psig/Pnoise) # SNR in dB
+
+def psd(x,fs,zeropadfact=1):
+    assert x.ndim==1
+
+    nt = x.size
+
+    win = hann(nt)
+
+    nfft = int(zeropadfact * nt)
+
+    Fb = fft(win * x, nfft)
+    Fb = Fb[:nfft/2]
+
+    psd = 2/(fs*nfft) * abs(Fb)**2
+    fax = arange(0,fs/2,fs/nfft) #frequencies corresponding to shift fft freq bins
+    return psd,fax
