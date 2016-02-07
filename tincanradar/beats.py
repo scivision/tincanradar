@@ -14,13 +14,25 @@ from numpy import asarray
 
 c = 299792458
 
-def range2beat(rng,fm,bw):
-    return 2*asarray(rng)*bw*fm/c
+def range2beat(range_m, fm, bw):
+    """
+    range_m: one-way range to target in meters
+    bw: FMCW linear chirp bandwidth
+    fm: cadence of sweep (how many sweeps/sec,  or 1/tm)
+    """
+    return 2*asarray(range_m)*bw*fm/c
+
+def beat2range(beats,fm,bw):
+    """
+    beats: beat frequencies from target returns
+    bw: FMCW linear chirp bandwidth
+    fm: cadence of sweep (how many sweeps/sec,  or 1/tm)
+    """
+    return c * beats /(2*bw*fm) #distance estimate, meters
+
 
 def bw2rangeres(bw):
     return c/(2*bw)
-
-
 
 
 if __name__ == '__main__':

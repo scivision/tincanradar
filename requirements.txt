@@ -1,0 +1,6 @@
+setuptools
+six
+nose
+numpy
+matplotlib
+seaborn
