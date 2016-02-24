@@ -40,6 +40,8 @@ def psd(x,fs,zeropadfact=1):
     Fb = fft(win * x, nfft)
     Fb = Fb[:nfft/2]
 
-    psd = 2/(fs*nfft) * abs(Fb)**2
-    fax = arange(0,fs/2,fs/nfft) #frequencies corresponding to shift fft freq bins
-    return psd,fax
+    Pxx = 2/(fs*nfft) * abs(Fb)**2
+
+    fax = arange(0,fs/2,fs/nfft)[:Pxx.size] #frequencies corresponding to shift fft freq bins
+
+    return Pxx,fax
