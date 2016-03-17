@@ -2,14 +2,13 @@
 """
 """
 from numpy.random import randn
-from numpy import arange,exp,pi,sqrt
-from matplotlib.pyplot import figure,show,draw,pause
-from numpy.fft import fft
+from numpy import arange,exp,pi,sqrt,log10
+from matplotlib.pyplot import figure,subplots,draw,pause
 #
-from tincanradar.estimation import snrest
+from tincanradar.estimation import snrest,psd
 
 Nobs = 100
-fs = 48000
+fs = 16000
 tm = 0.1
 Ftone = 1000. #[Hz]
 SNR = 20 #[dB]
@@ -32,19 +31,28 @@ def simtone():
 
 def plots(t,y):
 #%% time domain movie
-    fg = figure(1); fg.clf()
-    ax = fg.gca()
-    hp = ax.plot(t[:Np],y[0,:Np])[0]
+    fg,axs = subplots(1,2)
+
+    ax = axs[0]
+    hr = ax.plot(t[:Np],y[0,:Np])[0]
     ax.set_title('Noisy Sinusoid')
     ax.set_xlabel('time [sec]')
     ax.set_ylabel('amplitude')
-    for Y in y:
-        hp.set_ydata(Y[:Np])
-        draw(); pause(0.001)
 
-#%% PSD movie
-    fg = figure(2); fg.clf()
-    ax = fg.gca()
+    ax = axs[1]
+    Pxx,fax = psd(y[0,:Np],fs)
+    hp = ax.plot(fax,10*log10(Pxx))[0]
+    ax.set_title('Noisy PSD')
+    ax.set_xlabel('Frequency [Hz]')
+    ax.set_ylabel('amplitude [dB]')
+
+    for Y in y:
+        hr.set_ydata(Y[:Np])
+
+        Pxx,fax = psd(Y[:Np],fs)
+        hp.set_ydata(10*log10(Pxx))
+
+        draw(); pause(0.001)
 
 
 if __name__ == '__main__':

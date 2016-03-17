@@ -29,15 +29,13 @@ def snrest(signal,noise,axis=None):
     return 10 * log10(Psig/Pnoise) # SNR in dB
 
 def psd(x,fs,zeropadfact=1):
-    assert x.ndim==1
-
     nt = x.size
 
     win = hann(nt)
 
     nfft = int(zeropadfact * nt)
 
-    Fb = fft(win * x, nfft)
+    Fb = fft(win * x, nfft,axis=-1)
     Fb = Fb[:nfft/2]
 
     Pxx = 2/(fs*nfft) * abs(Fb)**2

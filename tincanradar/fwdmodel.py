@@ -3,8 +3,8 @@ from numpy import log10,pi,exp,asarray,arange
 from scipy.signal import firwin,lfilter,resample
 #from matplotlib.pyplot import specgram
 #
-c = 299792458
-a = 1
+c = 299792458.
+a = 1.
 
 def friis(range_m,freq,exp=2):
     return 10*log10((4*pi * freq / c)**2 * range_m**exp)
