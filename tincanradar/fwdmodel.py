@@ -1,10 +1,15 @@
 from __future__ import division
+from time import time
 from numpy import log10,pi,exp,asarray,arange
 from scipy.signal import firwin,lfilter,resample
-#from matplotlib.pyplot import specgram
+try:
+    import fwd
+except ImportError:
+    fwd = None
+
 #
 c = 299792458.
-a = 1.
+Atarg = [0.2]
 
 def friis(range_m,freq,exp=2):
     return 10*log10((4*pi * freq / c)**2 * range_m**exp)
@@ -19,18 +24,24 @@ def fmcwtransceive(bm,tm,range_m,adcbw,adcfs,tfs,nlfm=0.):
 
     t = arange(0,tm,1/tfs)
 
-    xt,lo = chirp(bm,tm, t, range_m,nlfm)
-   # specgram(lo,Fs=tfs)
-#%% mixer, lpf
-    y = xt * lo.conjugate()
-
+    tic = time()
+    if fwd is not None:
+        y = fwd.fwdmodel.chirp(bm,tm, t, range_m, Atarg, nlfm)
+    else:
+        xt,lo = chirp(bm,tm, t, range_m,nlfm)
+        y = xt * lo.conjugate()
+        # specgram(lo,Fs=tfs)
+    print('{:.3f} sec to compute time-domain chirp'.format(time()-tic))
+#%% mixer lpf
+    tic=time()
     h = firwin( numtaps=100, cutoff=adcbw, nyq=tfs/2)
     y = lfilter( h, 1., y)
+    print('{} sec to anti-alias filter'.format(time()-tic))
 
-    Y,t = resample(y,int(xt.size * adcfs / tfs),t)
+    Y,t = resample(y,int(y.size * adcfs / tfs),t)
     return Y,t
 #%% FMCW
-def chirp(bm,tm,t,range_m,nlfm=0.):
+def chirp(bm,tm,t,range_m, Atarg, nlfm=0.):
 
     toffs = 2 * asarray(range_m)/c
 
@@ -39,7 +50,7 @@ def chirp(bm,tm,t,range_m,nlfm=0.):
 
     lo = 1*exp(1j * chirp_phase(bm,tm,t,nlfm)) # unit amplitude, set transmit power in Prx fwdmodel.py
 #%% targets
-    xtargs = a * exp(1j*chirp_phase(bm,tm,t+toffs, nlfm))
+    xtargs = Atarg * exp(1j*chirp_phase(bm,tm,t+toffs, nlfm))
 
     return xtargs, lo
 
