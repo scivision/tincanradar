@@ -3,7 +3,7 @@ from time import time
 from numpy import log10,pi,exp,asarray,arange
 from scipy.signal import firwin,lfilter,resample
 try:
-    import fwd
+    import pychirp as fwd
 except ImportError:
     fwd = None
 
