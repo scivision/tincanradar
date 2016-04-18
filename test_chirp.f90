@@ -1,7 +1,7 @@
 program test_chirp
 
 use fwdmodel, only: chirp
-use comm, only: dp,stdout!,stderr
+use comm, only: dp,stdout,c_int!,stderr
 
 implicit none
 
@@ -10,14 +10,14 @@ real(dp),parameter :: tm=0.01 !second
 real(dp),parameter :: fs=100e6 !Hz
 real(dp),parameter :: nlfm=0.
 
-integer,parameter  :: Ntarg = 2
+integer(c_int),parameter  :: Ntarg = 2
 real(dp),parameter :: Atarg(Ntarg)=[0.001,0.002]
 real(dp),parameter :: range_m(Ntarg)=[5,7]
 
-integer,parameter :: Ns=int(tm*fs)
+integer(c_int),parameter :: Ns=int(tm*fs)
 complex(dp) :: y(Ns,Ntarg)
 real(dp) :: t(Ns)
-integer :: i
+integer(c_int) :: i
 
 write(stdout,*) Ns,' samples'
 
@@ -27,8 +27,6 @@ do i=1,Ns
 enddo
 
 call chirp(bm,tm,t,Ns,range_m,Atarg,Ntarg,nlfm,y)
-
-
 
 
 

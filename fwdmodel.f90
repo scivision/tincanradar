@@ -1,5 +1,5 @@
 module fwdmodel
-   use comm,only: J,dp,pi,c
+   use comm,only: J,dp,c_int,pi,c
    implicit none
 
 contains
@@ -7,13 +7,13 @@ contains
 
 pure subroutine chirp(bm,tm,t,Ns,range_m,Atarg,Ntarg,nlfm,y)
 
-    integer, intent(in) :: Ns,Ntarg
+    integer(c_int), intent(in) :: Ns,Ntarg
     real(dp), intent(in) ::  bm,tm,t(Ns),range_m(Ntarg),Atarg(Ntarg),nlfm
     complex(dp),intent(out) :: y(Ns)
     
     complex(dp) :: LO(Ns)
     real(dp) ::  phase(Ns), toffs(Ntarg)
-    integer :: i
+    integer(c_int) :: i
     
     toffs = 2*range_m/c !two-way delay
 
@@ -31,7 +31,7 @@ end subroutine chirp
 
 pure subroutine chirp_phase(bm,tm,t,Ns,nlfm,phase)
 
-    integer, intent(in) :: Ns
+    integer(c_int), intent(in) :: Ns
     real(dp), intent(in) :: bm,tm,nlfm,t(Ns)
     real(dp), intent(out):: phase(Ns)
 
@@ -40,7 +40,7 @@ pure subroutine chirp_phase(bm,tm,t,Ns,nlfm,phase)
     B1 = bm / tm
     B2 = bm / tm**2
 
-    phase = 2*pi*(-0.5*bm*t   & !starting freq
+    phase = 2*pi*(-0.5*bm*t   &       !starting freq
                  + 0.5*B1*t**2      & !linear ramp ("derivative of phase is frequency")
                  + 0.5*nlfm*B2*t**3)  !quadratic frequency
 

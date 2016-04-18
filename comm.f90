@@ -1,6 +1,6 @@
 module comm
-use, intrinsic :: iso_c_binding, only: sp=>C_FLOAT, dp=>C_DOUBLE, i64=>C_LONG_LONG, sizeof=>c_sizeof
-!use, intrinsic :: iso_fortran_env, only : sp=>real32, dp=>real64, i64=>int64
+use, intrinsic :: iso_c_binding, only: sp=>C_FLOAT, dp=>C_DOUBLE, i64=>C_LONG_LONG, sizeof=>c_sizeof, c_int
+
 use, intrinsic :: iso_fortran_env, only : stdout=>output_unit, stderr=>error_unit
 
 implicit none
@@ -14,8 +14,8 @@ contains
 
     subroutine init_random_seed()
 
-        integer :: i, n, clock
-        integer, allocatable :: seed(:)
+        integer(c_int) :: i, n, clock
+        integer(c_int), allocatable :: seed(:)
 
         call random_seed(size=n)
         allocate(seed(n))

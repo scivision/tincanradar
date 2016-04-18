@@ -2,6 +2,10 @@
 from setuptools import setup #enables develop
 import subprocess
 
+try:
+    subprocess.run(['conda','install','--yes','--quiet','--file','requirements.txt']) #don't use os.environ
+except Exception as e:
+    print('you will need to install packages in requirements.txt  {}'.format(e))
 
 with open('README.rst','r') as f:
 	  long_description = f.read()
@@ -16,7 +20,4 @@ setup(name='tincanradar',
       packages=['tincanradar'],
 	  )
 
-try:
-    subprocess.run(['conda','install','--yes','--quiet','--file','requirements.txt']) #don't use os.environ
-except Exception as e:
-    print('you will need to install packages in requirements.txt  {}'.format(e))
+
