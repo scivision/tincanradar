@@ -6,6 +6,7 @@ try:
     import pychirp as fwd
 except ImportError:
     fwd = None
+    print('falling back to slow non-Fortran method')
 
 #
 c = 299792458.
@@ -34,7 +35,7 @@ def fmcwtransceive(bm,tm,range_m,adcbw,adcfs,tfs,nlfm=0.):
     print('{:.3f} sec to compute time-domain chirp'.format(time()-tic))
 #%% mixer lpf
     tic=time()
-    h = firwin( numtaps=100, cutoff=adcbw, nyq=tfs/2)
+    h = firwin( numtaps=100, cutoff=adcbw, nyq=tfs/2.)
     y = lfilter( h, 1., y)
     print('{} sec to anti-alias filter'.format(time()-tic))
 
@@ -61,5 +62,5 @@ def chirp_phase(bm,tm,t,nlfm):
     #2*pi since we specified frequency in Hertz
     #FIXME check 0.5 scalar
     return 2*pi*(-0.5*bm*t  #starting freq
-                 + 0.5*B1*t**2    #linear ramp ("derivative of phase is frequency")
-                 + 0.5*nlfm*B2*t**3) #quadratic frequency
+                 + 0.5*B1*t**2.   #linear ramp ("derivative of phase is frequency")
+                 + 0.5*nlfm*B2*t**3.) #quadratic frequency

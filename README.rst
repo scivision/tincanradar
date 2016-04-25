@@ -19,10 +19,21 @@ Install
 =======
 ::
 
+    python setup.py develop
+
+
+Optional
+========
+
+Fortran
+-------------------
+::
+
     cd bin
     cmake ..
     make
 
-    python setup.py develop
 
-
+Cmake
+-----
+Need a newer version of Cmake? It's `simple. <https://gist.github.com/scienceopen/15c104d825289aa2c0f3489495fb01e5>`_

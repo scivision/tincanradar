@@ -39,8 +39,3 @@ add_compile_options( # Cmake >=3.3 for COMPILE_LANGUAGE
 if(CMAKE_BUILD_TYPE MATCHES Debug)
 #    add_compile_options(-fsanitize=address)
 endif()
-
-# Intel MKL is 2-3 times faster than Lapack and 2016 (v11.3) now no cost:
-# https://software.intel.com/en-us/articles/free_mkl
-# source /opt/intel/mkl/bin/mklvars.sh intel64
-# gfortran  myfile.f90  -Wl,--start-group ${MKLROOT}/lib/intel64/libmkl_gf_lp64.a ${MKLROOT}/lib/intel64/libmkl_core.a ${MKLROOT}/lib/intel64/libmkl_sequential.a -Wl,--end-group -I${MKLROOT}/include/intel64/lp64 -m64 -I${MKLROOT}/include -L${MKLROOT}/lib/intel64 -lmkl_gf_ilp64 -lmkl_gf_lp64 -lmkl_intel_ilp64 -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -lmkl_rt -lm -ldl 

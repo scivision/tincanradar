@@ -3,12 +3,15 @@ from setuptools import setup #enables develop
 import subprocess
 
 try:
-    subprocess.run(['conda','install','--yes','--quiet','--file','requirements.txt']) #don't use os.environ
+    subprocess.run(['conda','install','--yes','--file','requirements.txt']) #don't use os.environ
 except Exception as e:
     print('you will need to install packages in requirements.txt  {}'.format(e))
 
 with open('README.rst','r') as f:
 	  long_description = f.read()
+
+#%%
+from numpy.distutils.core import setup,Extension
 
 #%% install
 setup(name='tincanradar',
@@ -18,6 +21,9 @@ setup(name='tincanradar',
 	  author='Michael Hirsch',
 	  url='https://github.com/scivision/tincanradar',
       packages=['tincanradar'],
+      ext_modules=[Extension(name='pychirp',
+                    sources=['comm.f90','fwdmodel.f90'],
+                    f2py_options=['--quiet'])]
 	  )
 
 

@@ -1,7 +1,7 @@
-cmake_minimum_required (VERSION 3.3)
+cmake_minimum_required (VERSION 2.8)
 project(chirp C CXX Fortran)
 
-include(compiler.cmake) # boilerplate compiler flags
+add_compile_options(-std=f2008 -mtune=native -Wall -Wextra -Wpedantic -fexceptions)
 #------------
 add_library(fwdmodel fwdmodel.f90 comm.f90)
 
