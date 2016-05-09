@@ -1,28 +1,28 @@
 program test_chirp
 
 use fwdmodel, only: chirp
-use comm, only: dp,stdout,c_int!,stderr
+use comm, only: sp,stdout,c_int!,stderr
 
 implicit none
 
-real(dp),parameter :: bm=100e6 !Hz
-real(dp),parameter :: tm=0.01 !second
-real(dp),parameter :: fs=100e6 !Hz
-real(dp),parameter :: nlfm=0.
+real(sp),parameter :: bm=100e6 !Hz
+real(sp),parameter :: tm=0.01 !second
+real(sp),parameter :: fs=100e6 !Hz
+real(sp),parameter :: nlfm=0.
 
 integer(c_int),parameter  :: Ntarg = 2
-real(dp),parameter :: Atarg(Ntarg)=[0.001,0.002]
-real(dp),parameter :: range_m(Ntarg)=[5,7]
+real(sp),parameter :: Atarg(Ntarg)=[0.001,0.002]
+real(sp),parameter :: range_m(Ntarg)=[5,7]
 
 integer(c_int),parameter :: Ns=int(tm*fs)
-complex(dp) :: y(Ns,Ntarg)
-real(dp) :: t(Ns)
+complex(sp) :: y(Ns,Ntarg)
+real(sp) :: t(Ns)
 integer(c_int) :: i
 
 write(stdout,*) Ns,' samples'
 
 ! time vector
-do i=1,Ns
+do concurrent (i=1:Ns)
     t(i) = (i-1)/fs
 enddo
 

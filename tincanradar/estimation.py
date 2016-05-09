@@ -21,7 +21,7 @@ def ssq(x,axis=None):
 def snrest(noisy,noise,axis=None):
     """
     Computes SNR [in dB] when you have:
-    "noisy" signal+noise time series 
+    "noisy" signal+noise time series
     "noise": noise only without signal
     """
 
@@ -30,18 +30,23 @@ def snrest(noisy,noise,axis=None):
 
     return 10 * log10(Psig/Pnoise) # SNR in dB
 
-def psd(x,fs,zeropadfact=1):
+def psd(x,fs,zeropadfact=1,wintype=hann):
+    """
+    https://www.mathworks.com/help/signal/ug/psd-estimate-using-fft.html
+    use 10*log10(Pxx) for dB/Hz
+    """
     nt = x.size
 
-    win = hann(nt)
+    win = wintype(nt)
 
     nfft = int(zeropadfact * nt)
 
-    Fb = fft(win * x, nfft,axis=-1)
-    Fb = Fb[:nfft/2]
+    X = fft(win * x, nfft,axis=-1)
+    X = X[:nfft//2]
 
-    Pxx = 2/(fs*nfft) * abs(Fb)**2
+    Pxx = 1./(fs*nfft) * abs(X)**2.
+    Pxx[1:-1] = 2*Pxx[1:-1] #scales DC appropriately
 
-    fax = arange(0,fs/2,fs/nfft)[:Pxx.size] #frequencies corresponding to shift fft freq bins
+    fax = arange(0.,fs/2.,fs/nfft)[:Pxx.size] #frequencies corresponding to shift fft freq bins
 
     return Pxx,fax

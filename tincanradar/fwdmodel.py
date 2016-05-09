@@ -43,8 +43,9 @@ def fmcwtransceive(bm,tm,range_m,adcbw,adcfs,tfs,nlfm=0.):
     return Y,t
 #%% FMCW
 def chirp(bm,tm,t,range_m, Atarg, nlfm=0.):
+    range_m = asarray(range_m)
 
-    toffs = 2 * asarray(range_m)/c
+    toffs = 2 * range_m/c
 
     if t.size*range_m.size*8 > 8e9:
         raise MemoryError('too much RAM used {:.1e} B'.format(t.size*range_m.size*8))

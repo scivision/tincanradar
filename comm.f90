@@ -6,9 +6,9 @@ use, intrinsic :: iso_fortran_env, only : stdout=>output_unit, stderr=>error_uni
 implicit none
     public
 
-    complex(dp),parameter :: J=(0._dp,1._dp)
-    real(dp),parameter :: pi = 4._dp*atan(1._dp)
-    real(dp),parameter :: c = 299792458._dp
+    complex(sp),parameter :: J=(0.,1.)
+    real(sp),parameter :: pi = 4.*atan(1.)
+    real(sp),parameter :: c = 299792458.
 
 contains
 

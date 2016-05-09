@@ -1,7 +1,7 @@
-cmake_minimum_required (VERSION 2.8)
-project(chirp C CXX Fortran)
+cmake_minimum_required (VERSION 2.8.12)
+project(chirp Fortran)
 
-add_compile_options(-std=f2008 -mtune=native -Wall -Wextra -Wpedantic -fexceptions)
+add_compile_options(-std=f2008 -mtune=native -Wall -Wextra -Wpedantic -fexceptions -Warray-bounds)
 #------------
 add_library(fwdmodel fwdmodel.f90 comm.f90)
 

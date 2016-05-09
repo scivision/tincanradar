@@ -1,20 +1,22 @@
 module fwdmodel
-   use comm,only: J,dp,c_int,pi,c
+   use comm,only: J,sp,c_int,pi,c
    implicit none
 
+   private
+   public:: chirp, chirp_phase
 contains
 
 
 pure subroutine chirp(bm,tm,t,Ns,range_m,Atarg,Ntarg,nlfm,y)
 
     integer(c_int), intent(in) :: Ns,Ntarg
-    real(dp), intent(in) ::  bm,tm,t(Ns),range_m(Ntarg),Atarg(Ntarg),nlfm
-    complex(dp),intent(out) :: y(Ns)
-    
-    complex(dp) :: LO(Ns)
-    real(dp) ::  phase(Ns), toffs(Ntarg)
+    real(sp), intent(in) ::  bm,tm,t(Ns),range_m(Ntarg),Atarg(Ntarg),nlfm
+    complex(sp),intent(out) :: y(Ns)
+
+    complex(sp) :: LO(Ns)
+    real(sp) ::  phase(Ns), toffs(Ntarg)
     integer(c_int) :: i
-    
+
     toffs = 2*range_m/c !two-way delay
 
     call chirp_phase(bm,tm,t,Ns,nlfm,phase)
@@ -32,10 +34,10 @@ end subroutine chirp
 pure subroutine chirp_phase(bm,tm,t,Ns,nlfm,phase)
 
     integer(c_int), intent(in) :: Ns
-    real(dp), intent(in) :: bm,tm,nlfm,t(Ns)
-    real(dp), intent(out):: phase(Ns)
+    real(sp), intent(in) :: bm,tm,nlfm,t(Ns)
+    real(sp), intent(out):: phase(Ns)
 
-    real(dp) :: B1, B2
+    real(sp) :: B1, B2
 
     B1 = bm / tm
     B2 = bm / tm**2
