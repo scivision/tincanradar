@@ -41,6 +41,15 @@ def fmcwtransceive(bm,tm,range_m,adcbw,adcfs,tfs,nlfm=0.):
 
     Y,t = resample(y,int(y.size * adcfs / tfs),t)
     return Y,t
+
+def FMCWnoisepower(NF,adcbw):
+    """
+    Compute noise power for FMCW radar in dBm
+    Note: we are talking power not PSD. Hence we use final ADC filter bandwidth.
+    """
+    #RXbw = 2/tm # [Hz]
+
+    return -174.4 + NF + 10*log10(adcbw) #[dBm]
 #%% FMCW
 def chirp(bm,tm,t,range_m, Atarg, nlfm=0.):
     range_m = asarray(range_m)
