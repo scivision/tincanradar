@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from numpy import log10
 
-def uvm2dbm(uvm,r=3.):
+def uvm2dbm(uvm,range_m=3.):
     """
     converts microvolts per meter uV/m to dBm in a 50 ohm system
 
@@ -21,9 +21,9 @@ def uvm2dbm(uvm,r=3.):
     Example:
     dBm = 20*log10(uvm) - 95.2287874528 for r=3m (FCC)
     """
-    return dbuvm2dbm(20.*log10(uvm),r)
+    return dbuvm2dbm(20.*log10(uvm),range_m)
 
-def dbuvm2dbm(dbuvm,r=3.):
+def dbuvm2dbm(dbuvm,range_m=3.):
     """
     converts microvolts(dB) per meter dBuV/m to dBm in a 50 ohm system
 
@@ -34,5 +34,5 @@ def dbuvm2dbm(dbuvm,r=3.):
     outputs:
     dBm: decibels relative to 1mW in 50 ohm system
     """
-    return dbuvm - 90. + 10.*log10(r**2./30.)
+    return dbuvm - 90. + 10.*log10(range_m**2./30.)
 
