@@ -37,7 +37,7 @@ def fmcwtransceive(bm,tm,range_m,adcbw,adcfs,tfs,nlfm=0.):
     tic=time()
     h = firwin( numtaps=100, cutoff=adcbw, nyq=tfs/2.)
     y = lfilter( h, 1., y)
-    print('{} sec to anti-alias filter'.format(time()-tic))
+    print('{:.3f} sec to anti-alias filter'.format(time()-tic))
 
     Y,t = resample(y,int(y.size * adcfs / tfs),t)
     return Y,t
