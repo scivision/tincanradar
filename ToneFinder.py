@@ -1,5 +1,6 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """
+Simulates noisy sinusoids
 """
 from tincanradar.beats import simtone,plots
 

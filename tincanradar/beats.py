@@ -48,7 +48,7 @@ def simtone(tm,fs,SNR,Ftone,Nobs):
     nvar = 10**(-SNR/10.) #variance of noise
     noise = sqrt(nvar)*(randn(Nobs,x.size) + 1j*randn(Nobs,x.size))
 
-    print('SNR measured {} dB'.format(snrest(x,noise[0,:])))
+    print('SNR measured {:.1f} dB'.format(snrest(x,noise[0,:])))
 
     y = x + noise #noisy observation
 

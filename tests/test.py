@@ -1,8 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 from numpy import iscomplex
 from numpy.testing import run_module_suite,assert_allclose
+#
 from tincanradar.beats import simtone
 from tincanradar.estimation import snrest
+#
 Nobs = 1
 fs = 16000.
 tm = 0.1
@@ -11,7 +13,6 @@ SNR = 50. #[dB]
 
 def test_simtone():
     t,y = simtone(tm,fs,SNR,Ftone,Nobs)
-
     assert iscomplex(y).any()
 
 def test_snrest():
