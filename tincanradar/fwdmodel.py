@@ -1,12 +1,13 @@
 from __future__ import division
 from time import time
+from sys import stderr
 from numpy import log10,pi,exp,asarray,arange
 from scipy.signal import firwin,lfilter,resample
 try:
     import pychirp as fwd
 except ImportError:
     fwd = None
-    print('falling back to slow non-Fortran method')
+    print('falling back to slow non-Fortran method',file=stderr)
 
 #
 c = 299792458.
@@ -29,7 +30,7 @@ def fmcwtransceive(bm,tm,range_m,adcbw,adcfs,tfs,nlfm=0.):
     if fwd is not None:
         y = fwd.fwdmodel.chirp(bm,tm, t, range_m, Atarg, nlfm)
     else:
-        xt,lo = chirp(bm,tm, t, range_m,nlfm)
+        xt,lo = chirprx(bm,tm, t, range_m,nlfm)
         y = xt * lo.conjugate()
         # specgram(lo,Fs=tfs)
     print('{:.3f} sec to compute time-domain chirp'.format(time()-tic))
@@ -51,26 +52,33 @@ def FMCWnoisepower(NF,adcbw):
 
     return -174.4 + NF + 10*log10(adcbw) #[dBm]
 #%% FMCW
-def chirp(bm,tm,t,range_m, Atarg, nlfm=0.):
+def chirprx(bm,tm,t,range_m, Atarg, nlfm=0.):
+
+    lo = chirptx(bm,tm,t,nlfm)
+#%% targets
+
     range_m = asarray(range_m)
 
     toffs = 2 * range_m/c
 
     if t.size*range_m.size*8 > 8e9:
-        raise MemoryError('too much RAM used {:.1e} B'.format(t.size*range_m.size*8))
+        raise MemoryError(f'too much RAM used {t.size*range_m.size*8:.1e} B')
 
-    lo = 1*exp(1j * chirp_phase(bm,tm,t,nlfm)) # unit amplitude, set transmit power in Prx fwdmodel.py
-#%% targets
-    xtargs = Atarg * exp(1j*chirp_phase(bm,tm,t+toffs, nlfm))
+    xtargs = Atarg * exp(1j*chirptx(bm,tm,t+toffs, nlfm))
+
 
     return xtargs, lo
 
-def chirp_phase(bm,tm,t,nlfm):
+def chirptx(bm,tm,t,nlfm):
 
     B1 = bm / tm
     B2 = bm / tm**2
     #2*pi since we specified frequency in Hertz
     #FIXME check 0.5 scalar
-    return 2*pi*(-0.5*bm*t  #starting freq
+    phase = 2*pi*(-0.5*bm*t  #starting freq
                  + 0.5*B1*t**2.   #linear ramp ("derivative of phase is frequency")
                  + 0.5*nlfm*B2*t**3.) #quadratic frequency
+
+    lo = 1*exp(1j * phase) # unit amplitude, set transmit power in Prx fwdmodel.py
+
+    return lo

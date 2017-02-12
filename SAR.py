@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """
 Noise-free, clutter-free simulation of linear 1-D displacement linear FMCW radar
 This sim assume cross-range displacement is small, antenna radiation pattern is hemispherical, so that a spotlight-like mode results

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from tincanradar.antenna import dbuvm2dbm
+from tincanradar import dbuvm2dbm
 
 from argparse import ArgumentParser
 p = ArgumentParser()

@@ -1,36 +1,44 @@
-language: python
-
-python:
-    - 3.5
-
-sudo: true
-dist: trusty
+language: generic
 
 notifications:
-  email: false
+    email: false
 
 git:
-  depth: 1
+    depth: 3
 
 addons:
   apt:
-    packages:
-      - gfortran
+    sources: ['ubuntu-toolchain-r-test']
+    packages: gfortran-6
 
-before_install:
-    - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
-    - chmod +x miniconda.sh
-    - bash miniconda.sh -b -p $HOME/miniconda
-    - export PATH=$HOME/miniconda/bin:$PATH
+matrix:
+  include:    
+#    - os: osx
+#      env: pyv=3.6
+
+    - os: linux
+      dist: trusty
+      env: pyv=3.6
 
 install:
-    - conda create --yes -n test python=$TRAVIS_PYTHON_VERSION
+    - if [[ $TRAVIS_OS_NAME == osx ]]; then
+        wget http://repo.continuum.io/miniconda/Miniconda-latest-MacOSX-x86_64.sh -O miniconda.sh;
+      else 
+        wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
+      fi
+      
+    - bash miniconda.sh -b -p $HOME/miniconda
+    - export PATH=$HOME/miniconda/bin:$PATH
+    - hash -r
+    
+    - conda config --set always_yes yes --set changeps1 no
+    - conda update -q conda
+    - conda create -n test python=$pyv
     - source activate test
     - pip -q install coveralls
-    - python setup.py develop
+    - conda install numpy
+    - pip install . --process-dependency-links 
 
-script:
-    - coverage run test/test.py
+script: coverage run tests/test.py -v
 
-after_success:
-    - coveralls
+after_success: coveralls
