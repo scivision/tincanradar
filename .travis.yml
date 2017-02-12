@@ -8,8 +8,8 @@ git:
 
 addons:
   apt:
-    packages:
-      - gfortran
+    sources: ['ubuntu-toolchain-r-test']
+    packages: gfortran-6
 
 matrix:
   include:    
