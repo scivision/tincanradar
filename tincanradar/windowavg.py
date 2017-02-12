@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 from numpy import cumsum,zeros,empty_like,log10,arange,nan
 from numpy.random import standard_normal
 from scipy.signal import savgol_filter

@@ -12,7 +12,7 @@ Refs:
 from __future__ import division
 from numpy import arange,exp,pi,sqrt,log10,asarray
 from numpy.random import randn
-from matplotlib.pyplot import figure,subplots,draw,pause
+from matplotlib.pyplot import subplots,draw,pause
 #
 from .estimation import snrest,psd
 #
@@ -78,19 +78,3 @@ def plots(t,y,fs,Np):
         hp.set_ydata(10*log10(Pxx))
 
         draw(); pause(0.001)
-
-
-if __name__ == '__main__':
-    from argparse import ArgumentParser
-    p = ArgumentParser(description='calculate beat frequencies returned by stationary point targets via FMCW stimulus')
-    p.add_argument('-r','--range',help='range(s) to point target [meters]',type=float,nargs='+',default=[1,10,50])
-    p.add_argument('--tm',help='sweep tim [sec]',type=float,default=0.1)
-    p.add_argument('-b','--bw',help='RF bandwidth [Hz] over which you sweep e.g. 10.2 GHz - 10.7 GHz is 500e6',type=float,default=500e6)
-    p = p.parse_args()
-
-    fb = range2beat(p.range,p.tm,p.bw)
-
-    rngres = bw2rangeres(p.bw)
-
-    print('For point target ranges {} meters you may expect beat tones {} Hz.'.format(p.range,['{:.1f}'.format(f) for f in fb]))
-    print('Using {} MHz RF bandwidth, you may expect {:.4f} meters range resolution.'.format(p.bw/1e6,rngres))

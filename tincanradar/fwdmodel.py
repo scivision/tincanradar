@@ -1,12 +1,13 @@
 from __future__ import division
 from time import time
+from sys import stderr
 from numpy import log10,pi,exp,asarray,arange
 from scipy.signal import firwin,lfilter,resample
 try:
     import pychirp as fwd
 except ImportError:
     fwd = None
-    print('falling back to slow non-Fortran method')
+    print('falling back to slow non-Fortran method',file=stderr)
 
 #
 c = 299792458.

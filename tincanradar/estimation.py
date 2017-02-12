@@ -1,3 +1,4 @@
+from __future__ import division
 from numpy import sqrt,asarray,log10,arange
 from numpy import hanning as hann
 from numpy.fft import fft
