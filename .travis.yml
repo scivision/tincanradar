@@ -17,6 +17,7 @@ matrix:
 #      env: pyv=3.6
 
     - os: linux
+      dist: trusty
       env: pyv=3.6
 
 install:
