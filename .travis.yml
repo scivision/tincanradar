@@ -9,7 +9,9 @@ git:
 addons:
   apt:
     sources: ['ubuntu-toolchain-r-test']
-    packages: gfortran-6
+    packages: 
+      - gfortran-6
+      - libfftw3-dev
 
 matrix:
   include:    
@@ -36,7 +38,7 @@ install:
     - conda create -n test python=$pyv
     - source activate test
     - pip -q install coveralls
-    - conda install numpy
+    - conda install numpy matplotlib seaborn
     - pip install . --process-dependency-links 
 
 script: coverage run tests/test.py -v
