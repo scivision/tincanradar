@@ -19,7 +19,7 @@ If you need something more, start an issue or send a message.
 ===========================     ==========================================================
 Function                            Description
 ===========================     ==========================================================
-FS2dBm.py                       Convert field strength in dBuV/m to 50 ohm dBm
+FS2dBm.py                       Convert field strength in dBuV/m or uV/m to 50 ohm dBm
 ToneFinder.py                   Simulate noisy sinusoids from  target returns
 Friis.py                        Compute Free Space Path Loss (dB)
 ===========================     ==========================================================
