@@ -33,7 +33,7 @@ def fmcwtransceive(bm,tm,range_m,adcbw,adcfs,tfs,nlfm=0.):
         xt,lo = chirprx(bm,tm, t, range_m,nlfm)
         y = xt * lo.conjugate()
         # specgram(lo,Fs=tfs)
-    print('{:.3f} sec to compute time-domain chirp'.format(time()-tic))
+    print(f'{time()-tic:.3f} sec to compute time-domain chirp')
 #%% mixer lpf
     tic=time()
     h = firwin( numtaps=100, cutoff=adcbw, nyq=tfs/2.)
@@ -64,8 +64,7 @@ def chirprx(bm,tm,t,range_m, Atarg, nlfm=0.):
     if t.size*range_m.size*8 > 8e9:
         raise MemoryError(f'too much RAM used {t.size*range_m.size*8:.1e} B')
 
-    xtargs = Atarg * exp(1j*chirptx(bm,tm,t+toffs, nlfm))
-
+    xtargs = Atarg * chirptx(bm,tm,t+toffs, nlfm)
 
     return xtargs, lo
 
