@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from tincanradar.beats import range2beat,bw2rangeres
+from tincanradar import range2beat,bw2rangeres
 
 if __name__ == '__main__':
     from argparse import ArgumentParser
@@ -14,5 +14,5 @@ if __name__ == '__main__':
 
     rngres = bw2rangeres(p.bw)
 
-    print('For point target ranges {} meters you may expect beat tones {} Hz.'.format(p.range,['{:.1f}'.format(f) for f in fb]))
+    print('For point target ranges {} meters you may expect beat tones {} Hz.'.format(p.range,['{:.3f}'.format(f) for f in fb]))
     print(f'Using {p.bw/1e6} MHz RF bandwidth, you may expect {rngres:.3f} meters range resolution.')

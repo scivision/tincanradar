@@ -2,7 +2,7 @@
 from numpy import iscomplex
 from numpy.testing import run_module_suite,assert_allclose
 #
-from tincanradar.beats import simtone
+from tincanradar import simtone
 from tincanradar.estimation import snrest
 #
 Nobs = 1
@@ -18,8 +18,8 @@ def test_simtone():
 def test_snrest():
     sig = [1,-1]
     noise = [0.1,-0.1]
-    snr = snrest(sig+noise,noise)
-    assert_allclose(snr,20.,rtol=.1)
+    snr = snrest(sig+noise, noise)
+    assert_allclose(snr, 20., rtol=.1)
 
 if __name__ == '__main__':
     run_module_suite()

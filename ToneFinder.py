@@ -2,7 +2,8 @@
 """
 Simulates noisy sinusoids
 """
-from tincanradar.beats import simtone,plots
+from tincanradar import simtone
+from tincanradar.plots import plots
 
 Nobs = 100
 fs = 16000
