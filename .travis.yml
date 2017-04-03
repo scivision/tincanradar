@@ -6,12 +6,15 @@ notifications:
 git:
     depth: 3
 
+
 addons:
   apt:
-    sources: ['ubuntu-toolchain-r-test']
-    packages: 
-      - gfortran-6
-      - libfftw3-dev
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gfortran-5
+    - liblapack-dev
+    - libfftw3-dev
 
 matrix:
   include:    
@@ -22,12 +25,18 @@ matrix:
       dist: trusty
       env: pyv=3.6
 
-install:
+
+before_install:
+    - mkdir -p $HOME/.local/bin
+    - ln -fs /usr/bin/gfortran-5 "$HOME/.local/bin/gfortran" && gfortran --version
+
     - if [[ $TRAVIS_OS_NAME == osx ]]; then
         wget http://repo.continuum.io/miniconda/Miniconda-latest-MacOSX-x86_64.sh -O miniconda.sh;
       else 
         wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
       fi
+
+install:
       
     - bash miniconda.sh -b -p $HOME/miniconda
     - export PATH=$HOME/miniconda/bin:$PATH
