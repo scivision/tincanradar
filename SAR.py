@@ -39,7 +39,8 @@ def simsar(fn=None):
     # we do this one range at a time (like in real life), but here to conserve RAM when simulating chirp
     s = empty((x.size,Ns),dtype=complex128)
     for i,r in enumerate(srng):
-        if ~(i % 2): print('{:.1f} %'.format(i/x.size*100))
+        if not (i % 2): 
+            print(f'{i/x.size*100:.1f} %')
         s[i,:],t = fmcwtransceive(bm,tm,r,adcbw,adcfs,tfs,nlfm)
 
     if fn:
