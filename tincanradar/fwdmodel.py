@@ -72,12 +72,12 @@ def chirptx(bm,tm,t,nlfm):
 
     B1 = bm / tm
     B2 = bm / tm**2
-    #2*pi since we specified frequency in Hertz
-    #FIXME check 0.5 scalar
-    phase = 2*pi*(-0.5*bm*t  #starting freq
-                 + 0.5*B1*t**2.   #linear ramp ("derivative of phase is frequency")
-                 + 0.5*nlfm*B2*t**3.) #quadratic frequency
+    # 2*pi since we specified frequency in Hertz
+    # FIXME check 0.5 scalar
+    phase = 2*pi*(-0.5*bm*t            # starting freq
+                 + 0.5*B1*t**2.        # linear ramp ("derivative of phase is frequency")
+                 + 0.5*nlfm*B2*t**3.)  # quadratic frequency
 
-    lo = 1*exp(1j * phase) # unit amplitude, set transmit power in Prx fwdmodel.py
+    lo = 1*exp(1j * phase)  # unit amplitude, set transmit power in Prx fwdmodel.py
 
     return lo
