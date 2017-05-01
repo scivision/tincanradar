@@ -130,7 +130,7 @@ def snrest(noisy,noise,axis=None):
 
     return 10 * np.log10(Psig/Pnoise) # SNR in dB
 
-def psd(x, fs, zeropadfact=1, wintype='hanning'):
+def psd(x, fs, zeropadfact=1, wintype=np.hanning):
     """
     https://www.mathworks.com/help/signal/ug/psd-estimate-using-fft.html
     output dB/Hz

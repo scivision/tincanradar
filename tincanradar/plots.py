@@ -5,7 +5,7 @@ the formation of these plots follow Sec. 4.2 of Greg Charvat "Small and Short-Ra
 import numpy as np
 from matplotlib.pyplot import figure,subplots,clf,draw,pause
 #
-from .estimation import psd
+from . import psd
 
 def plots(t, y, fs, Np):
 #%% time domain movie
@@ -18,7 +18,7 @@ def plots(t, y, fs, Np):
     ax.set_ylabel('amplitude')
 
     ax = axs[1]
-    Pxx,fax = psd(y[0,:Np],fs)
+    Pxx,fax = psd(y[0,:Np], fs)
     hp = ax.plot(fax,10*np.log10(Pxx))[0]
     ax.set_title('Noisy PSD')
     ax.set_xlabel('Frequency [Hz]')
@@ -27,7 +27,7 @@ def plots(t, y, fs, Np):
     for Y in y:
         hr.set_ydata(Y[:Np])
 
-        Pxx,fax = psd(Y[:Np],fs)
+        Pxx,fax = psd(Y[:Np], fs)
         hp.set_ydata(10*np.log10(Pxx))
 
         draw(); pause(0.001)
