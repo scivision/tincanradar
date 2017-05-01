@@ -133,7 +133,7 @@ def snrest(noisy,noise,axis=None):
 def psd(x, fs, zeropadfact=1, wintype=np.hanning):
     """
     https://www.mathworks.com/help/signal/ug/psd-estimate-using-fft.html
-    output dB/Hz
+    take 10log10(Pxx) output dB/Hz
     """
     nt = x.size
 
@@ -149,4 +149,4 @@ def psd(x, fs, zeropadfact=1, wintype=np.hanning):
 
     fax = np.arange(0.,fs/2.,fs/nfft)[:Pxx.size] #frequencies corresponding to shift fft freq bins
 
-    return 10 * np.log10(Pxx), fax
+    return Pxx, fax
