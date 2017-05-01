@@ -2,8 +2,7 @@
 from numpy import iscomplex
 from numpy.testing import run_module_suite,assert_allclose
 #
-from tincanradar import simtone
-from tincanradar.estimation import snrest
+from tincanradar import simtone, snrest
 #
 Nobs = 1
 fs = 16000.

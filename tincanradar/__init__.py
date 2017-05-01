@@ -11,8 +11,6 @@ Refs:
 """
 import numpy as np
 from scipy.constants import c
-#
-from .estimation import snrest
 
 def range2beat(range_m, tm, bw):
     """
@@ -103,3 +101,52 @@ def dbuvm2dbm(dbuvm,range_m=3.):
     dBm: decibels relative to 1mW in 50 ohm system
     """
     return dbuvm - 90. + 10. * np.log10(range_m**2./30.)
+# %% estimation
+def rssq(x,axis=None):
+    """
+    root-sum-of-squares
+    """
+    x = np.asarray(x)
+    return np.sqrt(ssq(x,axis))
+
+def ssq(x,axis=None):
+    """
+    sum-of-squares
+        this method is ~10% faster than (abs(x)**2).sum()
+    """
+    x = np.asarray(x)
+    return(x*x.conj()).real.sum(axis)
+
+
+def snrest(noisy,noise,axis=None):
+    """
+    Computes SNR [in dB] when you have:
+    "noisy" signal+noise time series
+    "noise": noise only without signal
+    """
+
+    Psig   = ssq(noisy,axis)
+    Pnoise = ssq(noise)
+
+    return 10 * np.log10(Psig/Pnoise) # SNR in dB
+
+def psd(x, fs, zeropadfact=1, wintype='hanning'):
+    """
+    https://www.mathworks.com/help/signal/ug/psd-estimate-using-fft.html
+    output dB/Hz
+    """
+    nt = x.size
+
+    win = wintype(nt)
+
+    nfft = int(zeropadfact * nt)
+
+    X = np.fft.fft(win * x, nfft,axis=-1)
+    X = X[:nfft//2]
+
+    Pxx = 1./(fs*nfft) * abs(X)**2.
+    Pxx[1:-1] = 2*Pxx[1:-1] #scales DC appropriately
+
+    fax = np.arange(0.,fs/2.,fs/nfft)[:Pxx.size] #frequencies corresponding to shift fft freq bins
+
+    return 10 * np.log10(Pxx), fax

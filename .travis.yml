@@ -1,11 +1,17 @@
-language: generic
+language: python
+
+python:
+  - 3.5
+  - 3.6
 
 notifications:
     email: false
 
 git:
     depth: 3
-
+    
+os: linux
+dist: trusty
 
 addons:
   apt:
@@ -16,14 +22,6 @@ addons:
     - liblapack-dev
     - libfftw3-dev
 
-matrix:
-  include:    
-#    - os: osx
-#      env: pyv=3.6
-
-    - os: linux
-      dist: trusty
-      env: pyv=3.6
 
 
 before_install:
@@ -47,8 +45,8 @@ install:
     - conda create -n test python=$pyv
     - source activate test
     - pip -q install coveralls
-    - conda install numpy matplotlib seaborn
-    - pip install . --process-dependency-links 
+    
+    - python setup.py develop
 
 script: coverage run tests/test.py -v
 
