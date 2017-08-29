@@ -1,7 +1,6 @@
 language: python
 
 python:
-  - 3.5
   - 3.6
 
 os:
@@ -38,14 +37,13 @@ before_install:
     - export PATH=$HOME/miniconda/bin:$PATH
     - hash -r
 
-install:
     - conda config --set always_yes yes --set changeps1 no
     - conda update -q conda
     - conda create -n test python=$TRAVIS_PYTHON_VERSION
     - source activate test
     - pip -q install coveralls
 
-    - python setup.py develop
+install: python setup.py develop
 
 script: coverage run tests/test.py -v
 
