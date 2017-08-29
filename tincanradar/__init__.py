@@ -12,7 +12,7 @@ Refs:
 import numpy as np
 from scipy.constants import c
 
-def range2beat(range_m, tm, bw):
+def range2beat(range_m, tm:float, bw:float):
     """
     range_m: one-way range to target in meters
     bw: FMCW linear chirp bandwidth
@@ -20,7 +20,7 @@ def range2beat(range_m, tm, bw):
     """
     return 2*np.asarray(range_m)*bw/(tm*c)
 
-def beat2range(beats,tm,bw):
+def beat2range(beats, tm:float, bw:float):
     """
     beats: beat frequencies from target returns
     bw: FMCW linear chirp bandwidth
@@ -28,25 +28,28 @@ def beat2range(beats,tm,bw):
     """
     return c * beat2time(beats,tm,bw) #distance estimate, meters
 
-def beat2time(beats,tm,bw):
+def beat2time(beats, tm:float, bw:float):
     return beats*tm / (2*bw) #two-way travel time, seconds
 
 def bw2rangeres(bw):
     return c / (2*bw)
 
-def beatlinear1d(x,y):
+def beatlinear1d(x, y, tm:float, bw:float):
     """
     returns linear FMCW beat frequencies as a result of 1-D displacement x, perpendicular distance y from radar antenna
     x: vector of x-displacement [m]
     y: distance from radar
+    tm: time of sweep
+    bw: FMCW linear chirp bandwidth
+
     """
     #theta = np.angle1d(x,y)
     srng = np.hypot(x,y)
 
-    return range2beat(srng,fm,bw)
+    return range2beat(srng, tm,bw)
 
 
-def angle1d(x,y):
+def angle1d(x, y):
     """
     returns angles due to 1-D displacement in x relative to a reference at position y
     right triangle geometry
@@ -54,7 +57,7 @@ def angle1d(x,y):
 
     return np.degrees(np.arctan(y/x))
 
-def simtone(tm,fs,SNR,Ftone,Nobs):
+def simtone(tm, fs, SNR, Ftone, Nobs):
     t = np.arange(0,tm,1/fs) #time samples
     x = np.sqrt(2)* np.exp(1j*2*np.pi*Ftone*t) #noise-free signal
 
@@ -65,9 +68,9 @@ def simtone(tm,fs,SNR,Ftone,Nobs):
 
     y = x + noise #noisy observation
 
-    return t,y
+    return t, y
 
-def uvm2dbm(uvm,range_m=3.):
+def uvm2dbm(uvm, range_m=3.):
     """
     converts microvolts per meter uV/m to dBm in a 50 ohm system
 
@@ -89,7 +92,7 @@ def uvm2dbm(uvm,range_m=3.):
     """
     return dbuvm2dbm(20. * np.log10(uvm),range_m)
 
-def dbuvm2dbm(dbuvm,range_m=3.):
+def dbuvm2dbm(dbuvm, range_m=3.):
     """
     converts microvolts(dB) per meter dBuV/m to dBm in a 50 ohm system
 
@@ -102,14 +105,14 @@ def dbuvm2dbm(dbuvm,range_m=3.):
     """
     return dbuvm - 90. + 10. * np.log10(range_m**2./30.)
 # %% estimation
-def rssq(x,axis=None):
+def rssq(x, axis=None):
     """
     root-sum-of-squares
     """
     x = np.asarray(x)
     return np.sqrt(ssq(x,axis))
 
-def ssq(x,axis=None):
+def ssq(x, axis=None):
     """
     sum-of-squares
         this method is ~10% faster than (abs(x)**2).sum()
@@ -118,7 +121,7 @@ def ssq(x,axis=None):
     return(x*x.conj()).real.sum(axis)
 
 
-def snrest(noisy,noise,axis=None):
+def snrest(noisy, noise, axis=None):
     """
     Computes SNR [in dB] when you have:
     "noisy" signal+noise time series
@@ -130,10 +133,10 @@ def snrest(noisy,noise,axis=None):
 
     return 10 * np.log10(Psig/Pnoise) # SNR in dB
 
-def psd(x, fs, zeropadfact=1, wintype=np.hanning):
+def psd(x, fs:int, zeropadfact:float=1, wintype=np.hanning):
     """
     https://www.mathworks.com/help/signal/ug/psd-estimate-using-fft.html
-    take 10log10(Pxx) output dB/Hz
+    take 10*log10(Pxx) for [dB/Hz]
     """
     nt = x.size
 
@@ -141,12 +144,12 @@ def psd(x, fs, zeropadfact=1, wintype=np.hanning):
 
     nfft = int(zeropadfact * nt)
 
-    X = np.fft.fft(win * x, nfft,axis=-1)
+    X = np.fft.fft(win * x, nfft, axis=-1)
     X = X[:nfft//2]
 
     Pxx = 1./(fs*nfft) * abs(X)**2.
     Pxx[1:-1] = 2*Pxx[1:-1] #scales DC appropriately
 
-    fax = np.arange(0.,fs/2.,fs/nfft)[:Pxx.size] #frequencies corresponding to shift fft freq bins
+    f = np.arange(0.,fs/2.,fs/nfft)[:Pxx.size] # shifted fft freq. bins
 
-    return Pxx, fax
+    return Pxx, f
