@@ -18,7 +18,8 @@ setup(name='tincanradar',
 	  url='https://github.com/scivision/tincanradar',
       ext_modules=[Extension(name='pychirp',
                     sources=['comm.f90','fwdmodel.f90'],
-                    f2py_options=['--quiet'])]
+                    f2py_options=['--quiet'])],
+      install_requires=req,                    
 	  )
 
 
