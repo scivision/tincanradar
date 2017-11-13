@@ -1,11 +1,5 @@
 #!/usr/bin/env python
 req =['nose','numpy','matplotlib','seaborn']
-try:
-    import conda.cli
-    conda.cli.main('install',*req)
-except Exception as e:
-    import pip
-    pip.main(['install'] + req)
 # %%    
 from setuptools import setup #enables develop
 from numpy.distutils.core import setup,Extension
@@ -19,7 +13,8 @@ setup(name='tincanradar',
       ext_modules=[Extension(name='pychirp',
                     sources=['comm.f90','fwdmodel.f90'],
                     f2py_options=['--quiet'])],
-      install_requires=req,                    
+      install_requires=req, 
+      python_requires='>=3.6',                   
 	  )
 
 
