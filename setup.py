@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-req =['nose','numpy','matplotlib','seaborn']
+req =['nose','numpy','scipy']
 # %%    
-from setuptools import setup #enables develop
 from numpy.distutils.core import setup,Extension
 #%% install
 setup(name='tincanradar',
@@ -14,6 +13,7 @@ setup(name='tincanradar',
                     sources=['comm.f90','fwdmodel.f90'],
                     f2py_options=['--quiet'])],
       install_requires=req, 
+      extras_require={'plot':['matplotlib','seaborn']},
       python_requires='>=3.6',                   
 	  )
 

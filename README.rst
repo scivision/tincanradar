@@ -1,3 +1,13 @@
+.. image:: https://travis-ci.org/scivision/tincanradar.svg?branch=master
+    :target: https://travis-ci.org/scivision/tincanradar
+    
+.. image:: https://coveralls.io/repos/github/scivision/tincanradar/badge.svg?branch=master
+    :target: https://coveralls.io/github/scivision/tincanradar?branch=master
+
+.. image:: https://api.codeclimate.com/v1/badges/c837e410c41e163d47bd/maintainability
+   :target: https://codeclimate.com/github/scivision/tincanradar/maintainability
+   :alt: Maintainability
+
 =============
 tin-can-radar
 =============
@@ -29,8 +39,35 @@ Forward Model
 A forward model of linear/non-linear FMCW chirp is provided in Python using an optional Fortran library for speed.
 
 
-Install
+Build
 =======
+
+Prereq
+------
+If you don't have Numpy already::
+
+    pip install numpy
+    
+Mac
+~~~
+::
+
+    brew install gcc
+    
+Linux
+~~~~~
+::
+
+    apt install gfortran
+    
+Windows
+~~~~~~~
+`Install Gfortran <https://www.scivision.co/install-latest-gfortran-on-ubuntu/>`_
+
+
+
+Install
+-------
 ::
 
     pip install -e .
@@ -44,7 +81,7 @@ Optional
 ========
 
 Fortran
--------------------
+-------
 ::
 
     cd bin
