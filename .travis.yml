@@ -7,8 +7,6 @@ python:
 os:
   - linux
   
-env: FC=gfortran-6
-
 dist: trusty
 group: edge
 
@@ -20,10 +18,8 @@ git:
 
 addons:
   apt:
-    sources:
-      - ubuntu-toolchain-r-test
     packages:
-      - gfortran-6
+      - gfortran
       - liblapack-dev
       - libfftw3-dev
 
@@ -32,7 +28,7 @@ before_install:
     # for pip < 9.1
     - pip -q install numpy
 
-install: pip -q install -e .
+install: pip install -e .
 
 script: coverage run tests/test.py -v
 
