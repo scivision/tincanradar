@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 req =['nose','numpy','scipy']
-# %%    
+# %%
+from setuptools import find_packages
 from numpy.distutils.core import setup,Extension
 #%% install
 setup(name='tincanradar',
-      version='0.1',
-      packages=['tincanradar'],
+      version='0.1.0',
+      packages=find_packages(),
 	  description='Model and Build a $35 radar from coffee cans and MMICs',
 	  author='Michael Hirsch, Ph.D.',
 	  url='https://github.com/scivision/tincanradar',
