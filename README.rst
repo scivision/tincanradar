@@ -9,7 +9,7 @@
    :alt: Maintainability
 
 =============
-tin-can-radar
+Tin Can Radar
 =============
 
 Utilities for designing, building, and using a $35 Tin Can Radar, from the original 2006 prototype
@@ -42,27 +42,9 @@ A forward model of linear/non-linear FMCW chirp is provided in Python using an o
 Build
 =======
 
-Prereq
-------
-If you don't have Numpy already::
-
-    pip install numpy
-    
-Mac
-~~~
-::
-
-    brew install gcc
-    
-Linux
-~~~~~
-::
-
-    apt install gfortran
-    
-Windows
-~~~~~~~
-`Install Gfortran <https://www.scivision.co/install-latest-gfortran-on-ubuntu/>`_
+* Mac: ``brew install gcc``
+* Linux: ``apt install gfortran``
+* Windows: install `gfortran <https://www.scivision.co/install-latest-gfortran-on-ubuntu/>`_
 
 
 
