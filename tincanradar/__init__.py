@@ -7,12 +7,14 @@ You might consider planning your sweep frequency and beat frequencies to land wi
 
 Refs:
 1) D. G. Luck, Frequency Modulated Radar. New York: McGraw-Hill, 1949.
-2) M. Hirsch. “A Low-Cost Approach to L-band FMCW Radar: Thru-Wall Microwatt Radar". Ottawa, Ontario: North American Radio Science Meeting, July 2007.
+2) M. Hirsch. “A Low-Cost Approach to L-band FMCW Radar: Thru-Wall Microwatt Radar".
+        Ottawa, Ontario: North American Radio Science Meeting, July 2007.
 """
 import numpy as np
 from scipy.constants import c
 
-def range2beat(range_m, tm:float, bw:float):
+
+def range2beat(range_m, tm: float, bw: float):
     """
     range_m: one-way range to target in meters
     bw: FMCW linear chirp bandwidth
@@ -20,21 +22,25 @@ def range2beat(range_m, tm:float, bw:float):
     """
     return 2*np.asarray(range_m)*bw/(tm*c)
 
-def beat2range(beats, tm:float, bw:float):
+
+def beat2range(beats, tm: float, bw: float):
     """
     beats: beat frequencies from target returns
     bw: FMCW linear chirp bandwidth
     tm: time of sweep
     """
-    return c * beat2time(beats,tm,bw) #distance estimate, meters
+    return c * beat2time(beats, tm, bw)  # distance estimate, meters
 
-def beat2time(beats, tm:float, bw:float):
-    return beats*tm / (2*bw) #two-way travel time, seconds
+
+def beat2time(beats, tm: float, bw: float):
+    return beats*tm / (2*bw)  # two-way travel time, seconds
+
 
 def bw2rangeres(bw):
     return c / (2*bw)
 
-def beatlinear1d(x, y, tm:float, bw:float):
+
+def beatlinear1d(x, y, tm: float, bw: float):
     """
     returns linear FMCW beat frequencies as a result of 1-D displacement x, perpendicular distance y from radar antenna
     x: vector of x-displacement [m]
@@ -43,10 +49,10 @@ def beatlinear1d(x, y, tm:float, bw:float):
     bw: FMCW linear chirp bandwidth
 
     """
-    #theta = np.angle1d(x,y)
-    srng = np.hypot(x,y)
+    # theta = np.angle1d(x,y)
+    srng = np.hypot(x, y)
 
-    return range2beat(srng, tm,bw)
+    return range2beat(srng, tm, bw)
 
 
 def angle1d(x, y):
@@ -57,18 +63,20 @@ def angle1d(x, y):
 
     return np.degrees(np.arctan(y/x))
 
+
 def simtone(tm, fs, SNR, Ftone, Nobs):
-    t = np.arange(0,tm,1/fs) #time samples
-    x = np.sqrt(2)* np.exp(1j*2*np.pi*Ftone*t) #noise-free signal
+    t = np.arange(0, tm, 1/fs)  # time samples
+    x = np.sqrt(2) * np.exp(1j*2*np.pi*Ftone*t)  # noise-free signal
 
-    nvar = 10**(-SNR/10.) #variance of noise
-    noise = np.sqrt(nvar)*(np.random.randn(Nobs,x.size) + 1j*np.random.randn(Nobs,x.size))
+    nvar = 10**(-SNR/10.)  # variance of noise
+    noise = np.sqrt(nvar)*(np.random.randn(Nobs, x.size) + 1j*np.random.randn(Nobs, x.size))
 
-    print('SNR measured {:.1f} dB'.format(snrest(x,noise[0,:])))
+    print('SNR measured {:.1f} dB'.format(snrest(x, noise[0, :])))
 
-    y = x + noise #noisy observation
+    y = x + noise  # noisy observation
 
     return t, y
+
 
 def uvm2dbm(uvm, range_m=3.):
     """
@@ -90,7 +98,8 @@ def uvm2dbm(uvm, range_m=3.):
     Example:
     dBm = 20*log10(uvm) - 95.2287874528 for r=3m (FCC)
     """
-    return dbuvm2dbm(20. * np.log10(uvm),range_m)
+    return dbuvm2dbm(20. * np.log10(uvm), range_m)
+
 
 def dbuvm2dbm(dbuvm, range_m=3.):
     """
@@ -105,12 +114,15 @@ def dbuvm2dbm(dbuvm, range_m=3.):
     """
     return dbuvm - 90. + 10. * np.log10(range_m**2./30.)
 # %% estimation
+
+
 def rssq(x, axis=None):
     """
     root-sum-of-squares
     """
     x = np.asarray(x)
-    return np.sqrt(ssq(x,axis))
+    return np.sqrt(ssq(x, axis))
+
 
 def ssq(x, axis=None):
     """
@@ -128,12 +140,13 @@ def snrest(noisy, noise, axis=None):
     "noise": noise only without signal
     """
 
-    Psig   = ssq(noisy,axis)
+    Psig = ssq(noisy, axis)
     Pnoise = ssq(noise)
 
-    return 10 * np.log10(Psig/Pnoise) # SNR in dB
+    return 10 * np.log10(Psig/Pnoise)  # SNR in dB
 
-def psd(x, fs:int, zeropadfact:float=1, wintype=np.hanning):
+
+def psd(x, fs: int, zeropadfact: float=1, wintype=np.hanning):
     """
     https://www.mathworks.com/help/signal/ug/psd-estimate-using-fft.html
     take 10*log10(Pxx) for [dB/Hz]
@@ -148,8 +161,8 @@ def psd(x, fs:int, zeropadfact:float=1, wintype=np.hanning):
     X = X[:nfft//2]
 
     Pxx = 1./(fs*nfft) * abs(X)**2.
-    Pxx[1:-1] = 2*Pxx[1:-1] #scales DC appropriately
+    Pxx[1:-1] = 2*Pxx[1:-1]  # scales DC appropriately
 
-    f = np.arange(0.,fs/2.,fs/nfft)[:Pxx.size] # shifted fft freq. bins
+    f = np.arange(0., fs/2., fs/nfft)[:Pxx.size]  # shifted fft freq. bins
 
     return Pxx, f
