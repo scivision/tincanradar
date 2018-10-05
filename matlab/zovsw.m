@@ -11,15 +11,15 @@ Ee=(Eps+1)/2+((Eps-1)./(2*sqrt(1+12*h./W))); %effective epsilon of line
 Zo=120*pi./(sqrt(Ee).*(W/h+1.393+0.667*log(W/h+1.444))); %characteristic impedance of line
 
 figure
-plot(W,Zo); %Taking into account Ereff, what must width be?
-xlabel('Width of Strip Line [m]');
-ylabel('Characteristic Impedance of Strip Line');
-title('Width vs. Zo');
-grid on;
+plot(W,Zo) %Taking into account Ereff, what must width be?
+xlabel('Width of Strip Line [m]')
+ylabel('Characteristic Impedance of Strip Line')
+title('Width vs. Zo')
+grid('on')
 
 figure
-plot(Ee,Zo); 
-xlabel('Effective Epsilon of Strip Line');
-ylabel('Characteristic Impedance of Strip Line');
-title('Ee vs. Zo');
-grid on;
+plot(Ee,Zo)
+xlabel('Effective Epsilon of Strip Line')
+ylabel('Characteristic Impedance of Strip Line')
+title('Ee vs. Zo')
+grid('on')

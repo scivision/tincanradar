@@ -29,10 +29,10 @@ R2a=(a2*C2a+(sqrt((a2*C2a)^2-4*b2*C1a*C2a)))/(4*pi*6E+4*C1a*C2a)
 assert(isreal(R1a) && isreal(R2a),'resistors cannot be complex')
 
 figure
-plot(C1,R1);
-axis([1.0E-9 1.0E-8 10 10000]);
-xlabel('C1 Capacitance');
-ylabel('R1 Value');
-title('R1 vs. C1');
-grid on;
+plot(C1,R1)
+axis([1.0E-9 1.0E-8 10 10000])
+xlabel('C1 Capacitance')
+ylabel('R1 Value')
+title('R1 vs. C1')
+grid('on')
 

@@ -32,11 +32,11 @@ Ereffw=((Er+1)/2+((Er-1)/2)*((log(pi/2)+(1/Er)*log(4/pi))./log((8*h)./Ww))); %ef
 Lew=1./sqrt(Ereffw); %scalar for wavelength inside strip
 %% plot
 figure
-plot(Wn,Zon);
-xlabel('Width of Strip Line [m]');
-ylabel('Characteristic Impedance of Strip Line');
-title('Width vs. Zo FOR W/H<2');
-grid on;
+plot(Wn,Zon)
+xlabel('Width of Strip Line [m]')
+ylabel('Characteristic Impedance of Strip Line')
+title('Width vs. Zo FOR W/H<2')
+grid('on')
 
 %{
 figure
@@ -55,11 +55,11 @@ grid on;
 %}
 
 figure
-plot(Ww,Zow);
-xlabel('Width of Strip Line [m]');
-ylabel('Characteristic Impedance of Strip Line');
-title('Width vs. Zo FOR W/H>=2');
-grid on;
+plot(Ww,Zow)
+xlabel('Width of Strip Line [m]')
+ylabel('Characteristic Impedance of Strip Line')
+title('Width vs. Zo FOR W/H>=2')
+grid('on')
 
 %{
 figure

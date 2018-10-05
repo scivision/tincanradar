@@ -16,10 +16,10 @@ C2=C1*((4*b1)/a1^2);
 R1=(a1*C2-(sqrt((a1*C2)^2-4*b1*C1*C2)))/(4*pi*6E+4*C1*C2);
 %% plot
 figure
-plot(C2,R1);
+plot(C2,R1)
 %axis([1.0E-9 1.0E-6 100 10000]);
-xlabel('C2 Capacitance');
-ylabel('R1 Value');
-title('R1');
-grid on;
+xlabel('C2 Capacitance')
+ylabel('R1 Value')
+title('R1')
+grid('on')
 

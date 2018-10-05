@@ -62,23 +62,23 @@ grid on;
 
 %case W/H<1
 figure
-plot(Wn,Zon); %Taking into account Er.effective, what must width be?
-xlabel('Width of Strip Line [m]');
-ylabel('Characteristic Impedance of Strip Line');
-title('Width vs. Zo FOR W/H <1');
-grid on;
+plot(Wn,Zon) %Taking into account Er.effective, what must width be?
+xlabel('Width of Strip Line [m]')
+ylabel('Characteristic Impedance of Strip Line')
+title('Width vs. Zo FOR W/H <1')
+grid('on')
 
 figure
-plot(Ereffn,Zon);
-xlabel('Effective Epsilon of Strip Line ');
-ylabel('Characteristic Impedance of Strip Line ');
-title('Ee vs. Zo W/H <1');
-grid on;
+plot(Ereffn,Zon)
+xlabel('Effective Epsilon of Strip Line ')
+ylabel('Characteristic Impedance of Strip Line ')
+title('Ee vs. Zo W/H <1')
+grid('on')
 
 figure
-plot(Ereffn,Len);
-xlabel('Epilson.effective');
-ylabel('wavelength.strip');
-title('Epsilon.effective vs. Wavelength in strip W/H <1');
-grid on;
+plot(Ereffn,Len)
+xlabel('Epilson.effective')
+ylabel('wavelength.strip')
+title('Epsilon.effective vs. Wavelength in strip W/H <1')
+grid('on')
 

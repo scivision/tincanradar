@@ -24,15 +24,15 @@ Rs1=0.9*Rs1:1.1*Rs1;
 Vo1=1.25*(1+Rs1/R1)+Ia*Rs1;
 %% plot
 figure
-plot(Rs,Vo);
-xlabel('Rs');
-ylabel('Vo');
-title('Rs vs. Vo');
-grid on;
+plot(Rs,Vo)
+xlabel('Rs')
+ylabel('Vo')
+title('Rs vs. Vo')
+grid('on')
 
 figure
-plot(Rs1,Vo1);
-xlabel('Rs');
-ylabel('Vo');
-title('Rs vs. Vo');
-grid on;
+plot(Rs1,Vo1)
+xlabel('Rs')
+ylabel('Vo')
+title('Rs vs. Vo')
+grid('on')
