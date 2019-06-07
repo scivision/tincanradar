@@ -1,5 +1,3 @@
-program test_chirp
-
 use fwdmodel, only: chirp
 use comm, only: wp,c_int
 
@@ -23,11 +21,9 @@ print *, Ns,' samples'
 
 ! time vector
 do concurrent (i=1:Ns)
-    t(i) = (i-1)/fs
+  t(i) = (i-1)/fs
 enddo
 
 call chirp(bm,tm,t,Ns,range_m,Atarg,Ntarg,nlfm,y)
 
-
-
-end program test_chirp
+end program

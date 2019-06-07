@@ -1,7 +1,8 @@
 from time import time
 import warnings
-from numpy import log10, pi, exp, asarray, arange, ndarray
+import numpy as np
 from scipy.signal import firwin, lfilter, resample
+
 try:
     import pychirp as fwd
 except ImportError:
@@ -13,10 +14,11 @@ Atarg = [0.2]  # target amplitude, arbitrary (and often very small!)
 
 
 def friis(range_m, freq, exp=2):
-    return 10*log10((4*pi * freq / c)**2 * range_m**exp)
+    return 10*np.log10((4*np.pi * freq / c)**2 * range_m**exp)
 
 
-def fmcwtransceive(bm, tm, range_m, adcbw, adcfs, tfs, nlfm=0.):
+def fmcwtransceive(bm: float, tm: float, range_m: np.ndarray,
+                   adcbw: float, adcfs: float, tfs: float, nlfm: float = 0.):
     """
     Y is complex sinusoids at homodyne output (zero IF)
     t is elapsed time of each sample of Y
@@ -24,7 +26,7 @@ def fmcwtransceive(bm, tm, range_m, adcbw, adcfs, tfs, nlfm=0.):
     """
     assert adcbw < 2*adcfs, 'Nyquist violated on ADC video filter'
 
-    t = arange(0, tm, 1/tfs)
+    t = np.arange(0, tm, 1/tfs)
 
     tic = time()
     if fwd is not None:
@@ -44,18 +46,20 @@ def fmcwtransceive(bm, tm, range_m, adcbw, adcfs, tfs, nlfm=0.):
     return Y, t
 
 
-def FMCWnoisepower(NF, adcbw):
+def FMCWnoisepower(NF: float, adcbw: float):
     """
     Compute noise power for FMCW radar in dBm
     Note: we are talking power not PSD. Hence we use final ADC filter bandwidth.
     """
     # RXbw = 2/tm # [Hz]
 
-    return -174.4 + NF + 10*log10(adcbw)  # [dBm]
+    return -174.4 + NF + 10*np.log10(adcbw)  # [dBm]
 # %% FMCW
 
 
-def chirprx(bm: float, tm: float, t, range_m, Atarg, nlfm: float=0.):
+def chirprx(bm: float, tm: float,
+            t: np.ndarray, range_m: np.ndarray, Atarg: np.ndarray,
+            nlfm: float = 0.):
     """
     inputs
     -------
@@ -73,7 +77,7 @@ def chirprx(bm: float, tm: float, t, range_m, Atarg, nlfm: float=0.):
     """
     lo = chirptx(bm, tm, t, nlfm)
 # %% targets
-    range_m = asarray(range_m)
+    range_m = np.asarray(range_m)
 
     toffs = 2 * range_m/c
 
@@ -85,16 +89,16 @@ def chirprx(bm: float, tm: float, t, range_m, Atarg, nlfm: float=0.):
     return xtargs, lo
 
 
-def chirptx(bm: float, tm: float, t: ndarray, nlfm: float):
+def chirptx(bm: float, tm: float, t: np.ndarray, nlfm: float):
 
     B1 = bm / tm
     B2 = bm / tm**2
     # 2*pi since we specified frequency in Hertz
     # FIXME check 0.5 scalar
-    phase = 2*pi*(-0.5*bm*t            # starting freq
-                  + 0.5*B1*t**2.        # linear ramp ("derivative of phase is frequency")
-                  + 0.5*nlfm*B2*t**3.)  # quadratic frequency
+    phase = 2*np.pi*(-0.5*bm*t            # starting freq
+                     + 0.5*B1*t**2.        # linear ramp ("derivative of phase is frequency")
+                     + 0.5*nlfm*B2*t**3.)  # quadratic frequency
 
-    lo = 1*exp(1j * phase)  # unit amplitude, set transmit power in Prx fwdmodel.py
+    lo = 1*np.exp(1j * phase)  # unit amplitude, set transmit power in Prx fwdmodel.py
 
     return lo

@@ -6,9 +6,11 @@ This sim assume cross-range displacement is small, antenna radiation pattern is 
 Michael Hirsch
 """
 from pathlib import Path
-from numpy import arange, hypot, empty, complex128
+import numpy as np
 from matplotlib.pyplot import show
 import h5py
+from typing import Tuple
+from argparse import ArgumentParser
 #
 from tincanradar.fwdmodel import fmcwtransceive
 from tincanradar.plots import plotraw, rangemigration
@@ -27,18 +29,16 @@ dx = 0.05  # m
 
 x0, y0 = 0, 1.5  # m
 
-fn = 'first.h5'  # hdf5 to load or save
 
-
-def simsar(fn=None):
+def simsar(fn: Path = None):
     Ns = int(tm*adcfs)
 
-    x = arange(xstart, xend, dx, dtype=float)
+    x = np.arange(xstart, xend, dx, dtype=float)
     y = 0  # 1-D linear displacement
-    srng = hypot(x-x0, y-y0)
+    srng = np.hypot(x-x0, y-y0)
     # %% range to target --> beat frequencies
     # we do this one range at a time (like in real life), but here to conserve RAM when simulating chirp
-    s = empty((x.size, Ns), dtype=complex128)
+    s = np.empty((x.size, Ns), dtype=np.complex128)
     for i, r in enumerate(srng):
         if not (i % 2):
             print(f'{i/x.size*100:.1f} %')
@@ -46,6 +46,7 @@ def simsar(fn=None):
 
     if fn:
         fn = Path(fn).expanduser()
+
         with h5py.File(str(fn), 'w') as h:
             h.create_dataset('/s', data=s, compression='gzip', shuffle=True, fletcher32=True)
             h['/t'] = t
@@ -61,25 +62,32 @@ def simsar(fn=None):
     return s, t, x
 
 
-def loadsar(fn):
+def loadsar(fn: Path) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+
     with h5py.File(fn, 'r') as h:
-        s = h['/s'].value
-        t = h['/t'].value
-        x = h['/x'].value
+        s = h['/s'][:]
+        t = h['/t'][:]
+        x = h['/x'][:]
+
     return s, t, x
 
 
-def procsar(s, t, x, adcfs, bm):
+def procsar(s: np.ndarray, t: np.ndarray, x: np.ndarray, adcfs: float, bm: float):
+
     plotraw(s, t, x, adcfs, bm)
     rangemigration(s, t, x, adcfs, bm)
 
 
 if __name__ == '__main__':
+    p = ArgumentParser()
+    p.add_argument('fn', help='filename to load', nargs='?', default='first.h5')
+    P = p.parse_args()
+
     try:
-        s, t, x = loadsar(fn)
+        s, t, x = loadsar(P.fn)
         procsar(s, t, x, adcfs, bm)
     except OSError:
-        s, t, x = simsar(fn)
+        s, t, x = simsar(P.fn)
         procsar(s, t, x, adcfs, bm)
 
 show()

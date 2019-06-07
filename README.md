@@ -4,15 +4,9 @@
 
 # Tin Can Radar
 
-Utilities for designing, building, and using a \$35 Tin Can Radar, from
-the original 2006 prototype designed and built by Michael Hirsch and
-advised by Greg Charvat.
-
-I include utilities for designing the Wilkenson power divider used to
-siphon off a sample of the transmit waveform for the homodyne receiver.
-
-I include design equations for using coffee cans for antennas, as well
-as the more broadband Linear Tapered Slot Antenna.
+Utilities for designing, building, and using a $35 Tin Can Radar, from the original 2006 prototype designed and built by Michael Hirsch and advised by Greg Charvat.
+We include utilities for designing the Wilkenson power divider used to siphon off a sample of the transmit waveform for the homodyne receiver.
+We include design equations for using coffee cans for antennas, as well as the more broadband Linear Tapered Slot Antenna.
 
 If you need something more, start an issue or send a message.
 
@@ -23,15 +17,13 @@ If you need something more, start an issue or send a message.
 
 ## Forward Model
 
-A forward model of linear/non-linear FMCW chirp is provided in Python
-using an optional Fortran library for speed.
+A forward model of linear/non-linear FMCW chirp is provided in Python using an optional Fortran library for speed.
 
 ## Build
 
 -   Mac: `brew install gcc`
 -   Linux: `apt install gfortran`
--   Windows: install
-    [gfortran](https://www.scivision.co/install-latest-gfortran-on-ubuntu/)
+-   Windows: install [gfortran](https://www.scivision.dev/install-latest-gfortran-on-ubuntu/)
 
 ### Install
 
@@ -47,9 +39,10 @@ the matlab directory.
 
 ### Fortran
 
-optional
+This is optional
+
 ```sh
-cd bin
-cmake ..
-cmake --build .
+cmake -B build -S .
+
+cmake --build build
 ```

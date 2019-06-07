@@ -8,7 +8,7 @@ from matplotlib.pyplot import figure, subplots, clf, draw, pause
 from . import psd
 
 
-def plots(t, y, fs, Np):
+def plots(t: np.ndarray, y: np.ndarray, fs: int, Np: int):
     # %% time domain movie
     fg, axs = subplots(1, 2)
 
@@ -35,7 +35,7 @@ def plots(t, y, fs, Np):
         pause(0.001)
 
 
-def rangemigration(s, t, x, adcfs, bm):
+def rangemigration(s: np.ndarray, t: np.ndarray, x: np.ndarray, adcfs: float, bm: float):
     # %% Section 4.2 of Greg Charvat "Small and Short-Range radar Systems" CRC Press 2014
     sk = np.fft.fft(s, axis=0)
 

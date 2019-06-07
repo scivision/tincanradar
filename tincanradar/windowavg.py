@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from numpy import cumsum, empty_like, log10, arange, nan
+import numpy as np
 from numpy.random import standard_normal
 from scipy.signal import savgol_filter
 from matplotlib.pyplot import figure, show, draw, pause
@@ -8,17 +8,17 @@ http://stackoverflow.com/questions/18517722/weighted-moving-average-in-python
 '''
 
 
-def moving_average(a, n=3):
+def moving_average(a: np.ndarray, n: int = 3):
     '''
     http://stackoverflow.com/questions/14313510/moving-average-function-on-numpy-scipy
     '''
-    ret = cumsum(a, dtype=float)
+    ret = np.cumsum(a, dtype=float)
     ret[n:] = ret[n:] - ret[:-n]
     return ret[n - 1:] / n
 
 
-def cummoving_avg(a):
-    cumavg = empty_like(a)
+def cummoving_avg(a: np.ndarray):
+    cumavg = np.empty_like(a)
     # warmup
     cumavg[0] = a[0]
     for i in range(a.size-1):
@@ -26,8 +26,8 @@ def cummoving_avg(a):
     return cumavg
 
 
-def weightmov_avg(p, n=10):
-    wavg = empty_like(p)
+def weightmov_avg(p: np.ndarray, n: int = 10):
+    wavg = np.empty_like(p)
     wavg[:n-1] = p[:n-1]
 
     trinum = n*(n+1)/2
@@ -43,7 +43,7 @@ def weightmov_avg(p, n=10):
 
 
 def sgmov(p, n=21, o=2, x=None):
-    sgsig = nan*empty_like(p)
+    sgsig = np.nan*np.empty_like(p)
     sgsig[:n] = p[:n]
 
     if x is not None:
@@ -70,10 +70,10 @@ def noisydatagen(truesig, sigma=5):
 
 if __name__ == '__main__':
     doplot = True
-    x = arange(50, 1, -0.05)
+    x = np.arange(50, 1, -0.05)
     sigma = 5  # [dB]
 
-    truesig = -10-(20*log10(x) + 20*log10(2450) - 27.55)
+    truesig = -10-(20*np.log10(x) + 20*np.log10(2450) - 27.55)
     sig = noisydatagen(truesig, sigma)
     # filtsig = moving_average(sig,10)
 
