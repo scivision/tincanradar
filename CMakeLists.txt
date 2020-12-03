@@ -1,9 +1,12 @@
 cmake_minimum_required (VERSION 3.7)
+
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Debug or Release")
 endif()
+
 project(FMCWchirp LANGUAGES Fortran)
-enable_testing()
+
+include(CTest)
 
 if(CMAKE_Fortran_COMPILER_ID STREQUAL Intel)
   if(WIN32)
@@ -23,5 +26,7 @@ add_library(fwdmodel OBJECT fwdmodel.f90 comm.f90)
 
 add_executable(chirp test_chirp.f90)
 target_link_libraries(chirp PRIVATE fwdmodel)
+if(BUILD_TESTING)
 add_test(NAME FortranChirp COMMAND chirp)
 set_tests_properties(FortranChirp PROPERTIES TIMEOUT 10)
+endif(BUILD_TESTING)
