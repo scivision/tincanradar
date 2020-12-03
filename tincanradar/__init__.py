@@ -20,7 +20,7 @@ def range2beat(range_m: np.ndarray, tm: float, bw: float):
     bw: FMCW linear chirp bandwidth
     tm: time of sweep
     """
-    return 2*np.asarray(range_m)*bw/(tm*c)
+    return 2 * np.asarray(range_m) * bw / (tm * c)
 
 
 def beat2range(beats: np.ndarray, tm: float, bw: float):
@@ -33,11 +33,11 @@ def beat2range(beats: np.ndarray, tm: float, bw: float):
 
 
 def beat2time(beats: np.ndarray, tm: float, bw: float):
-    return beats*tm / (2*bw)  # two-way travel time, seconds
+    return beats * tm / (2 * bw)  # two-way travel time, seconds
 
 
 def bw2rangeres(bw: float):
-    return c / (2*bw)
+    return c / (2 * bw)
 
 
 def beatlinear1d(x: np.ndarray, y: np.ndarray, tm: float, bw: float):
@@ -61,24 +61,24 @@ def angle1d(x: float, y: float):
     right triangle geometry
     """
 
-    return np.degrees(np.arctan(y/x))
+    return np.degrees(np.arctan(y / x))
 
 
 def simtone(tm, fs, SNR, Ftone, Nobs):
-    t = np.arange(0, tm, 1/fs)  # time samples
-    x = np.sqrt(2) * np.exp(1j*2*np.pi*Ftone*t)  # noise-free signal
+    t = np.arange(0, tm, 1 / fs)  # time samples
+    x = np.sqrt(2) * np.exp(1j * 2 * np.pi * Ftone * t)  # noise-free signal
 
-    nvar = 10**(-SNR/10.)  # variance of noise
-    noise = np.sqrt(nvar)*(np.random.randn(Nobs, x.size) + 1j*np.random.randn(Nobs, x.size))
+    nvar = 10 ** (-SNR / 10.0)  # variance of noise
+    noise = np.sqrt(nvar) * (np.random.randn(Nobs, x.size) + 1j * np.random.randn(Nobs, x.size))
 
-    print('SNR measured {:.1f} dB'.format(snrest(x, noise[0, :])))
+    print("SNR measured {:.1f} dB".format(snrest(x, noise[0, :])))
 
     y = x + noise  # noisy observation
 
     return t, y
 
 
-def uvm2dbm(uvm: float, range_m: float = 3.):
+def uvm2dbm(uvm: float, range_m: float = 3.0):
     """
     converts microvolts per meter uV/m to dBm in a 50 ohm system
 
@@ -98,10 +98,10 @@ def uvm2dbm(uvm: float, range_m: float = 3.):
     Example:
     dBm = 20*log10(uvm) - 95.2287874528 for r=3m (FCC)
     """
-    return dbuvm2dbm(20. * np.log10(uvm), range_m)
+    return dbuvm2dbm(20.0 * np.log10(uvm), range_m)
 
 
-def dbuvm2dbm(dbuvm: float, range_m: float = 3.):
+def dbuvm2dbm(dbuvm: float, range_m: float = 3.0):
     """
     converts microvolts(dB) per meter dBuV/m to dBm in a 50 ohm system
 
@@ -112,7 +112,9 @@ def dbuvm2dbm(dbuvm: float, range_m: float = 3.):
     outputs:
     dBm: decibels relative to 1mW in 50 ohm system
     """
-    return dbuvm - 90. + 10. * np.log10(range_m**2./30.)
+    return dbuvm - 90.0 + 10.0 * np.log10(range_m ** 2.0 / 30.0)
+
+
 # %% estimation
 
 
@@ -130,7 +132,7 @@ def ssq(x: np.ndarray, axis=None):
         this method is ~10% faster than (abs(x)**2).sum()
     """
     x = np.asarray(x)
-    return(x*x.conj()).real.sum(axis)
+    return (x * x.conj()).real.sum(axis)
 
 
 def snrest(noisy: np.ndarray, noise: np.ndarray, axis=None):
@@ -143,11 +145,10 @@ def snrest(noisy: np.ndarray, noise: np.ndarray, axis=None):
     Psig = ssq(noisy, axis)
     Pnoise = ssq(noise)
 
-    return 10 * np.log10(Psig/Pnoise)  # SNR in dB
+    return 10 * np.log10(Psig / Pnoise)  # SNR in dB
 
 
-def psd(x: np.ndarray, fs: int,
-        zeropadfact: float = 1, wintype=np.hanning):
+def psd(x: np.ndarray, fs: int, zeropadfact: float = 1, wintype=np.hanning):
     """
     https://www.mathworks.com/help/signal/ug/psd-estimate-using-fft.html
     take 10*log10(Pxx) for [dB/Hz]
@@ -159,11 +160,11 @@ def psd(x: np.ndarray, fs: int,
     nfft = int(zeropadfact * nt)
 
     X = np.fft.fft(win * x, nfft, axis=-1)
-    X = X[:nfft//2]
+    X = X[: nfft // 2]
 
-    Pxx = 1./(fs*nfft) * abs(X)**2.
-    Pxx[1:-1] = 2*Pxx[1:-1]  # scales DC appropriately
+    Pxx = 1.0 / (fs * nfft) * abs(X) ** 2.0
+    Pxx[1:-1] = 2 * Pxx[1:-1]  # scales DC appropriately
 
-    f = np.arange(0., fs/2., fs/nfft)[:Pxx.size]  # shifted fft freq. bins
+    f = np.arange(0.0, fs / 2.0, fs / nfft)[: Pxx.size]  # shifted fft freq. bins
 
     return Pxx, f
