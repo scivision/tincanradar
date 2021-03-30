@@ -1,8 +1,8 @@
 [build-system]
-requires = ["setuptools", "wheel", "numpy"] 
+requires = ["setuptools", "wheel", "numpy"]
 
 [tool.black]
 line-length = 100
 
 [tool.pytest.ini_options]
-addopts = "-ra -v"
+addopts = "-ra"
