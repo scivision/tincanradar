@@ -1,15 +1,15 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+
 """
 Noise-free, clutter-free simulation of linear 1-D displacement linear FMCW radar
 This sim assume cross-range displacement is small, antenna radiation pattern is hemispherical, so that a spotlight-like mode results
-
-Michael Hirsch
 """
+
+from __future__ import annotations
 from pathlib import Path
 import numpy as np
 from matplotlib.pyplot import show
 import h5py
-from typing import Tuple
 from argparse import ArgumentParser
 
 #
@@ -32,7 +32,7 @@ dx = 0.05  # m
 x0, y0 = 0, 1.5  # m
 
 
-def simsar(fn: Path = None):
+def simsar(fn: Path | None = None):
     Ns = int(tm * adcfs)
 
     x = np.arange(xstart, xend, dx, dtype=float)
@@ -49,7 +49,7 @@ def simsar(fn: Path = None):
     if fn:
         fn = Path(fn).expanduser()
 
-        with h5py.File(str(fn), "w") as h:
+        with h5py.File(fn, "w") as h:
             h.create_dataset("/s", data=s, compression="gzip", shuffle=True, fletcher32=True)
             h["/t"] = t
             h["/x"] = x
@@ -64,8 +64,7 @@ def simsar(fn: Path = None):
     return s, t, x
 
 
-def loadsar(fn: Path) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-
+def loadsar(fn: Path) -> tuple:
     with h5py.File(fn, "r") as h:
         s = h["/s"][:]
         t = h["/t"][:]
@@ -74,8 +73,7 @@ def loadsar(fn: Path) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     return s, t, x
 
 
-def procsar(s: np.ndarray, t: np.ndarray, x: np.ndarray, adcfs: float, bm: float):
-
+def procsar(s, t, x, adcfs: float, bm: float) -> None:
     plotraw(s, t, x, adcfs, bm)
     rangemigration(s, t, x, adcfs, bm)
 

@@ -10,8 +10,11 @@ Refs:
 2) M. Hirsch. “A Low-Cost Approach to L-band FMCW Radar: Thru-Wall Microwatt Radar".
         Ottawa, Ontario: North American Radio Science Meeting, July 2007.
 """
+
 import numpy as np
 from scipy.constants import c
+
+__version__ = "0.2.0"
 
 
 def range2beat(range_m: np.ndarray, tm: float, bw: float):
@@ -112,7 +115,7 @@ def dbuvm2dbm(dbuvm: float, range_m: float = 3.0):
     outputs:
     dBm: decibels relative to 1mW in 50 ohm system
     """
-    return dbuvm - 90.0 + 10.0 * np.log10(range_m ** 2.0 / 30.0)
+    return dbuvm - 90.0 + 10.0 * np.log10(range_m**2.0 / 30.0)
 
 
 # %% estimation

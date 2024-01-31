@@ -1,10 +1,8 @@
-#!/usr/bin/env python
 from numpy import iscomplex
-import pytest
 from pytest import approx
 from tincanradar import simtone, snrest
 
-#
+
 Nobs = 1
 fs = 16000.0
 tm = 0.1
@@ -22,7 +20,3 @@ def test_snrest():
     noise = [0.1, -0.1]
     snr = snrest(sig + noise, noise)
     assert snr == approx(20.0, rel=0.1)
-
-
-if __name__ == "__main__":
-    pytest.main(["-x", __file__])

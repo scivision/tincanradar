@@ -14,13 +14,13 @@ Atarg = [0.2]  # target amplitude, arbitrary (and often very small!)
 
 
 def friis(range_m, freq, exp=2):
-    return 10 * np.log10((4 * np.pi * freq / c) ** 2 * range_m ** exp)
+    return 10 * np.log10((4 * np.pi * freq / c) ** 2 * range_m**exp)
 
 
 def fmcwtransceive(
     bm: float,
     tm: float,
-    range_m: np.ndarray,
+    range_m: float,
     adcbw: float,
     adcfs: float,
     tfs: float,
@@ -53,7 +53,7 @@ def fmcwtransceive(
     return Y, t
 
 
-def FMCWnoisepower(NF: float, adcbw: float):
+def FMCWnoisepower(NF: float, adcbw: float) -> float:
     """
     Compute noise power for FMCW radar in dBm
     Note: we are talking power not PSD. Hence we use final ADC filter bandwidth.
@@ -66,9 +66,7 @@ def FMCWnoisepower(NF: float, adcbw: float):
 # %% FMCW
 
 
-def chirprx(
-    bm: float, tm: float, t: np.ndarray, range_m: np.ndarray, Atarg: np.ndarray, nlfm: float = 0.0
-):
+def chirprx(bm: float, tm: float, t, range_m, Atarg, nlfm: float = 0.0) -> tuple:
     """
     inputs
     -------
@@ -98,10 +96,9 @@ def chirprx(
     return xtargs, lo
 
 
-def chirptx(bm: float, tm: float, t: np.ndarray, nlfm: float):
-
+def chirptx(bm: float, tm: float, t, nlfm: float):
     B1 = bm / tm
-    B2 = bm / tm ** 2
+    B2 = bm / tm**2
     # 2*pi since we specified frequency in Hertz
     # FIXME check 0.5 scalar
     phase = (
@@ -109,8 +106,8 @@ def chirptx(bm: float, tm: float, t: np.ndarray, nlfm: float):
         * np.pi
         * (
             -0.5 * bm * t  # starting freq
-            + 0.5 * B1 * t ** 2.0  # linear ramp ("derivative of phase is frequency")
-            + 0.5 * nlfm * B2 * t ** 3.0
+            + 0.5 * B1 * t**2.0  # linear ramp ("derivative of phase is frequency")
+            + 0.5 * nlfm * B2 * t**3.0
         )
     )  # quadratic frequency
 
