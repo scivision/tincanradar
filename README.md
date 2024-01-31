@@ -1,7 +1,5 @@
 # Tin Can Radar
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/c837e410c41e163d47bd/maintainability)](https://codeclimate.com/github/scivision/tincanradar/maintainability)
-
 Utilities for designing, building, and using a $35 Tin Can Radar, from the original 2006 prototype designed and built by Michael Hirsch and advised by Greg Charvat.
 We include utilities for designing the Wilkenson power divider used to siphon off a sample of the transmit waveform for the homodyne receiver.
 We include design equations for using coffee cans for antennas, as well as the more broadband Linear Tapered Slot Antenna.
